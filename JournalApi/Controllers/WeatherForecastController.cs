@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalApi.Controllers;
@@ -18,15 +19,29 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet]
+    [Route("{take:int}/example")]
+    public IEnumerable<WeatherForecast> Get([FromQuery] int max, [FromRoute] int take)
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        
     }
+    [HttpPost(Name="AddWeatherForecast")]
+    public ObjectResult Add ([FromBody] WeatherForecast weatherForecast)
+    {
+        var weatherNewForPlace = new WeatherForecast
+        {
+            Date = weatherForecast.Date,
+            TemperatureC = weatherForecast.TemperatureC,
+            Summary = weatherForecast.Summary
+        };
+        return StatusCode(200,weatherNewForPlace);
+    }
+
 }

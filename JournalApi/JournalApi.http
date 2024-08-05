@@ -1,8 +1,17 @@
 
 @JournalApi_HostAddress = http://localhost:5062
 
-GET {{JournalApi_HostAddress}}/weatherforecast/
+GET http://localhost:5062/WeatherForecast/12/example?max=24
 Accept: application/json
 
-###
 
+###
+ POST {{JournalApi_HostAddress}}/weatherforecast
+Content-Type: application/json
+
+{
+  "date": "2024-08-05T16:33:12.087Z",
+  "temperatureC": 0,
+  "summary": "string"
+}
+###
