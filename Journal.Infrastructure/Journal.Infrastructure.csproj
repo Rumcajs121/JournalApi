@@ -1,23 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <OutputPath>..\BuildOutput\bin\$(MSBuildProjectName)\</OutputPath>
     <IntermediateOutputPath>..\BuildOutput\obj\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Journal.Application\Journal.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\launchSettings 2.json" />
+    <ProjectReference Include="..\JournalApi\JournalApi.csproj" />
   </ItemGroup>
 
 </Project>

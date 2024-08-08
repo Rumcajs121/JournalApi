@@ -1,4 +1,5 @@
 using System.Net.Sockets;
+using JournalApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JournalApi.Controllers;
@@ -7,30 +8,34 @@ namespace JournalApi.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly IWeatherForecastService _service;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherForecastService service)
     {
         _logger = logger;
+        _service = service;
     }
 
     [HttpGet]
     [Route("{take:int}/example")]
-    public IEnumerable<WeatherForecast> Get([FromQuery] int max, [FromRoute] int take)
+    public ObjectResult Get([FromQuery] int max, [FromRoute] int take)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        var result=_service.Get();
+        return Ok(result);
+
+    }
+    [HttpPost("generate")]
+    public IActionResult Generate([FromQuery] int take,[FromBody]TemperatureRequest request)
+    {
+        if (take < 0 || request.MaxTemperature < request.MinTemperature)
+        {
+            return BadRequest("Error");
+        }
+        var result=_service.ExerciseGet(request.MaxTemperature,request.MinTemperature,take);
+        return Ok(result);
         
+
     }
     [HttpPost(Name="AddWeatherForecast")]
     public ObjectResult Add ([FromBody] WeatherForecast weatherForecast)
@@ -44,4 +49,10 @@ public class WeatherForecastController : ControllerBase
         return StatusCode(200,weatherNewForPlace);
     }
 
+}
+
+public class TemperatureRequest
+{
+    public int MinTemperature { get; set; }
+    public int MaxTemperature { get; set; }
 }

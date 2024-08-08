@@ -14,4 +14,12 @@ Content-Type: application/json
   "temperatureC": 0,
   "summary": "string"
 }
+
 ###
+POST {{JournalApi_HostAddress}}/WeatherForecast/generate?take=10
+Content-Type: application/json
+
+{
+  "minTemperature": -10,
+  "maxTemperature": 10
+}
