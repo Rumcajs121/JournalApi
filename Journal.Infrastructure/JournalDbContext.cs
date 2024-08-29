@@ -18,8 +18,11 @@ public class JournalDbContext:DbContext
         modelBuilder.Entity<Domain.Entities.Journal>(eb =>
         {
             eb.HasMany(w => w.Pictures)
-                .WithOne(c => c.Journals)
+                .WithOne(c => c.Journal)
                 .HasForeignKey(c => c.JournalId);
+            eb.HasOne<Author>(w => w.Author)
+                .WithMany(c => c.Journals)
+                .HasForeignKey(e => e.AuthorId);
         });
     }
 }
