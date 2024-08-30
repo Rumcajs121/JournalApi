@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Journal.Application\Journal.Application.csproj" />
-    <ProjectReference Include="..\JournalApi\JournalApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
