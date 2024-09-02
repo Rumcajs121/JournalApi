@@ -9,6 +9,6 @@ public static class ServiceExtensionsColletions
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<JournalDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("Connectionstring:JournalApiDb")));
+            options.UseSqlServer(configuration.GetConnectionString("JournalApiDb")));
     }
 }

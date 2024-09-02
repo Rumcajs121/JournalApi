@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Journal.Domain\Journal.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.21.2" />
+  </ItemGroup>
+
 </Project>
