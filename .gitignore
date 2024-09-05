@@ -6,7 +6,7 @@ BuildOutPut/
 bin/
 obj/
 Db.txt
-
+test
 # dotenv files
 .env
 
