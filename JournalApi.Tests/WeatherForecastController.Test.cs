@@ -1,4 +1,5 @@
 using FakeItEasy;
+using JournalApi.Controllers;
 using JournalApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -11,7 +12,7 @@ public class WeatherForecastController
     [Fact]
     public async Task GetResult_StatusCodeGetAction_ReturnStatusOk()
     {
-        //Arrage
+        
         int max = 5;
         int take = 2;
         var fakeWeatherForecast = A.CollectionOfFake<WeatherForecast>(take).AsEnumerable();
@@ -32,30 +33,29 @@ public class WeatherForecastController
         Assert.Equal(fakeWeatherForecast, returnedValue);
 
     }
+
+    [Fact]
+    public void GenerateRequest_StatusCodeAction_ReturnStatusOk()
+    {
+        int take = 3;
+
+        var fakeRequestTemperature = new TemperatureRequest
+        {
+            MinTemperature = 10,
+            MaxTemperature = 35
+        };
+        var fakeWeatherForecast = A.CollectionOfFake<WeatherForecast>(take).AsEnumerable();
+        var logger = A.Fake<ILogger<JournalApi.Controllers.WeatherForecastController>>();
+        var service = A.Fake<IWeatherForecastService>();
+        var memoryCache = new MemoryCache(new MemoryCacheOptions());
+        A.CallTo(() => service.ExerciseGet(fakeRequestTemperature.MaxTemperature, fakeRequestTemperature.MinTemperature, take))
+            .Returns(fakeWeatherForecast);
+        var controller=new Controllers.WeatherForecastController(logger,service,memoryCache);
+        var result = controller.Generate(take, fakeRequestTemperature);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200,okResult.StatusCode);
+        var returnedValue = Assert.IsAssignableFrom<IEnumerable<WeatherForecast>>(okResult.Value);
+        Assert.Equal(fakeWeatherForecast, returnedValue);
+    }
 }
 
-// [HttpGet]
-// [Route("{take:int}/example")]
-// public async Task<ObjectResult> Get([FromQuery] int max, [FromRoute] int take)
-// {
-//     var sepamphore = new SemaphoreSlim(1, 1);
-//     if (!_memoryCache.TryGetValue("forecast", out IEnumerable<WeatherForecast>? forecast))
-//     {
-//         try
-//         {
-//             await sepamphore.WaitAsync();
-//             if (!_memoryCache.TryGetValue("forecast", out forecast))
-//             {
-//                 forecast = _service.Get();
-//                 _memoryCache.Set("forecast", forecast, 
-//                     new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(10)));
-//             }
-//         }
-//         finally
-//         {
-//             sepamphore.Release();
-//         }
-//     }
-//
-//     return Ok(forecast);
-// }
