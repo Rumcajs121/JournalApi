@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Journal.Application", "Jour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JournalApi.Tests", "JournalApi.Tests\JournalApi.Tests.csproj", "{3E967667-4C21-40D7-A620-16F993C26D73}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueMessageConsumer", "QueueMessageConsumer\QueueMessageConsumer.csproj", "{5FB8E1A5-1FA6-4138-B8F6-079EA30A5541}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{3E967667-4C21-40D7-A620-16F993C26D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E967667-4C21-40D7-A620-16F993C26D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E967667-4C21-40D7-A620-16F993C26D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB8E1A5-1FA6-4138-B8F6-079EA30A5541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB8E1A5-1FA6-4138-B8F6-079EA30A5541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB8E1A5-1FA6-4138-B8F6-079EA30A5541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB8E1A5-1FA6-4138-B8F6-079EA30A5541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
