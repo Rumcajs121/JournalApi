@@ -1,3 +1,7 @@
+using FluentValidation;
+using Journal.Application;
+using Journal.Application.Commons.Commands.CreateJournal;
+using Journal.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,5 +14,7 @@ public static class ServiceExtensionsColletions
     {
         services.AddDbContext<JournalDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("JournalApiDb")));
+        services.AddScoped<IJournalRepository, JournalRepository>();
+        services.AddScoped<IValidator<CreateJournalCommand.JournalDto>, CreateJournalValidator>();
     }
 }
