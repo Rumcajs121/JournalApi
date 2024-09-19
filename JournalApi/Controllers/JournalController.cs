@@ -1,4 +1,5 @@
 using Journal.Application.Commons.Commands.CreateJournal;
+using Journal.Application.Commons.Queries.GetAllJournal;
 using log4net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,11 @@ public class JournalController :ControllerBase
         var result=await _mediator.Send(command);
         return Ok(result);
     }
-    
+
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _mediator.Send(new GetAllJournalQuery());
+        return Ok(result);
+    }
 }

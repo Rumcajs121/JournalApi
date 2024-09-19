@@ -5,8 +5,15 @@ namespace Journal.Application.Commons.Queries.GetAllJournal;
 
 public class GetAllJournalQueryHandler:IRequestHandler<GetAllJournalQuery,List<JournalMainDto>>
 {
-    public Task<List<JournalMainDto>> Handle(GetAllJournalQuery request, CancellationToken cancellationToken)
+    private readonly IJournalRepository _repository;
+
+    public GetAllJournalQueryHandler(IJournalRepository repository)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+    }
+    public async Task<List<JournalMainDto>> Handle(GetAllJournalQuery request, CancellationToken cancellationToken)
+    {
+        var result=await _repository.GetAll();
+        return result;
     }
 }

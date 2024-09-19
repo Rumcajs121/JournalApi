@@ -7,5 +7,5 @@ namespace Journal.Application;
 public interface IJournalRepository
 {
     Task<string> CreateJournal(CreateJournalCommand.JournalDto dto);
-    List<JournalMainDto> GetAll();
+    Task<List<JournalMainDto>> GetAll();
 }

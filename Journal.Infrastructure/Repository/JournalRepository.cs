@@ -23,15 +23,14 @@ public class JournalRepository:IJournalRepository
             AuthorId = dto.AuthorId,
         };
         _dbContext.Journals.Add(newJournal);
-        // await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
         return newJournal.NormalizedId;
     }
     
     
-    public List<JournalMainDto> GetAll()
+    public async Task<List<JournalMainDto>> GetAll()
     {
-        List<JournalMainDto> response = [];
-        var journalAll = _dbContext.Journals
+        var journalAll = await _dbContext.Journals
             .Include(x => x.Author)
             .Include(journal => journal.Pictures)
             .Select(journal => new JournalMainDto
@@ -39,11 +38,9 @@ public class JournalRepository:IJournalRepository
                 NormalizedId = journal.NormalizedId,
                 ShortDescription = journal.ShortDescription,
                 Text = journal.Text,
-                Pictures = journal.Pictures.Select(p => new PictureDto
-                {
-                    GuidNormalizedName = p.GuidNormalizedName,
-                    UriBlobStorage = "https://journalapisane.blob.core.windows.net/pictures/"
-                }).ToList(),  // Projektowanie obrazów na listę PictureDto
+                Pictures = journal.Pictures
+                    .Select(p => "https://journalapisane.blob.core.windows.net/pictures/" + p.GuidNormalizedName)
+                    .ToList(),
                 Nick = journal.Author.Nick,
                 ImgAvatar = journal.Author.ImgAvatar,
                 SumJournal = journal.Author.SumJournal,
@@ -51,7 +48,7 @@ public class JournalRepository:IJournalRepository
                 LastLogin = journal.Author.LastLogin,
                 TheBestJournal = journal.Author.TheBestJournal
             })
-            .ToList();
-        return response;
+            .ToListAsync();
+        return journalAll;
     }
 }
