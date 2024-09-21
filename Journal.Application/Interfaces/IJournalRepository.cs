@@ -8,4 +8,5 @@ public interface IJournalRepository
 {
     Task<string> CreateJournal(CreateJournalCommand.JournalDto dto);
     Task<List<JournalMainDto>> GetAll();
+    Task<bool> EditJournal(string id, EditAdctionFormDto dto);
 }

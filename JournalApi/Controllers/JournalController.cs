@@ -1,5 +1,7 @@
 using Journal.Application.Commons.Commands.CreateJournal;
+using Journal.Application.Commons.Commands.EditJournal;
 using Journal.Application.Commons.Queries.GetAllJournal;
+using Journal.Application.Dtos;
 using log4net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +32,21 @@ public class JournalController :ControllerBase
     {
         var result = await _mediator.Send(new GetAllJournalQuery());
         return Ok(result);
+    }
+    [HttpPost("Edit/{id}")]
+    public async Task<IActionResult> EditJournal([FromRoute]string id,[FromBody] EditAdctionFormDto dto)
+    {
+
+        var result = await _mediator.Send(new EditJournalCommand
+        {
+            Id = id,
+            EditProperty = dto
+        });
+        if (result)
+        {
+            return Ok("Journal edited successfully.");
+        }
+
+        return NotFound();
     }
 }

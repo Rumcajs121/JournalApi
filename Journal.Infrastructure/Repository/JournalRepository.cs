@@ -2,6 +2,7 @@ using Journal.Application;
 using Journal.Application.Commons.Commands.CreateJournal;
 using Journal.Application.Commons.Queries.GetAllJournal;
 using Journal.Application.Dtos;
+using Journal.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Journal.Infrastructure.Repository;
@@ -50,5 +51,19 @@ public class JournalRepository:IJournalRepository
             })
             .ToListAsync();
         return journalAll;
+    }
+
+    public async Task<bool> EditJournal(string id, EditAdctionFormDto dto)
+    {
+        var  jorunal = await _dbContext.Journals
+            .FirstOrDefaultAsync(x => x.NormalizedId == id);
+        if ( jorunal == null)
+        {
+            return false; 
+        }
+        jorunal.ShortDescription = dto.ShortDescription;
+        jorunal.Text = dto.Text;
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 }
