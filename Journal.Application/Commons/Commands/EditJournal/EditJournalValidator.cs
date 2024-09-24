@@ -3,24 +3,24 @@ using Journal.Application.Dtos;
 
 namespace Journal.Application.Commons.Commands.EditJournal;
 
-public class EditJournalValidator:AbstractValidator<EditAdctionFormDto>
+public class EditJournalValidator:AbstractValidator<EditJournalCommand>
 {
     public EditJournalValidator()
     {
-        RuleFor(c=>c.Text)
+        RuleFor(c => c.EditProperty.Text)
             .NotEmpty()
             .WithMessage("This section is not empty")
             .MinimumLength(3)
-            .WithMessage("This section is not empty")
+            .WithMessage("Text must be at least 3 characters")
             .MaximumLength(255)
-            .WithMessage("This section is to long");
-        RuleFor(c=>c.ShortDescription)
+            .WithMessage("Text must not exceed 255 characters");
+
+        RuleFor(c => c.EditProperty.ShortDescription)
             .NotEmpty()
             .WithMessage("This section is not empty")
             .MinimumLength(3)
-            .WithMessage("This section is not empty")
+            .WithMessage("Short description must be at least 3 characters")
             .MaximumLength(100)
-            .WithMessage("This section is to long");
+            .WithMessage("Short description must not exceed 100 characters");
     }
-    
 }

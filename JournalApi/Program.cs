@@ -1,5 +1,6 @@
 using Journal.Application;
 using Journal.Infrastructure.Extensions;
+using Journal.Infrastructure.Middleware;
 using JournalApi.Services;
 using log4net;
 using log4net.Config;
@@ -26,6 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

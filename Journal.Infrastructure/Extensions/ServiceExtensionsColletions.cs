@@ -3,6 +3,7 @@ using Journal.Application;
 using Journal.Application.Commons.Commands.CreateJournal;
 using Journal.Application.Commons.Commands.EditJournal;
 using Journal.Application.Dtos;
+using Journal.Infrastructure.Middleware;
 using Journal.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,6 @@ public static class ServiceExtensionsColletions
         services.AddDbContext<JournalDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("JournalApiDb")));
         services.AddScoped<IJournalRepository, JournalRepository>();
-        services.AddScoped<IValidator<CreateJournalCommand.JournalDto>, CreateJournalValidator>();
-        services.AddScoped<IValidator<EditAdctionFormDto>,  EditJournalValidator>();
+        services.AddSingleton<ErrorHandlingMiddleware>();
     }
 }

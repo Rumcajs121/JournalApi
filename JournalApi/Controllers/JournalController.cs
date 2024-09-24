@@ -36,17 +36,13 @@ public class JournalController :ControllerBase
     [HttpPost("Edit/{id}")]
     public async Task<IActionResult> EditJournal([FromRoute]string id,[FromBody] EditAdctionFormDto dto)
     {
+        
+            var result = await _mediator.Send(new EditJournalCommand
+            {
+                Id = id,
+                EditProperty = dto
+            });
 
-        var result = await _mediator.Send(new EditJournalCommand
-        {
-            Id = id,
-            EditProperty = dto
-        });
-        if (result)
-        {
-            return Ok("Journal edited successfully.");
-        }
-
-        return NotFound();
+            return Ok(result);
     }
 }
