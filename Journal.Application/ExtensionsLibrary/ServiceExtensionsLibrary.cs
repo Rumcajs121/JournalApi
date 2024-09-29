@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using Journal.Application.Commons.Commands.CreateJournal;
 using Journal.Application.Commons.Commands.EditJournal;
@@ -22,7 +23,9 @@ public static class ServiceExtensionsLibrary
     public static void  AddApplication(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-        services.AddValidatorsFromAssembly(typeof(EditJournalValidator).Assembly);
+        var assembly = Assembly.GetExecutingAssembly();
+        services.AddValidatorsFromAssemblyContaining<EditJournalValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateJournalValidator>();
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         

@@ -21,8 +21,9 @@ public class JournalController :ControllerBase
     }
     
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromBody]CreateJournalCommand command)
+    public async Task<IActionResult> Create([FromBody]CreateJournalDto dto)
     {
+        var command = new CreateJournalCommand(dto);
         var result=await _mediator.Send(command);
         return Ok(result);
     }

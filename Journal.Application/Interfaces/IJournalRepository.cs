@@ -6,7 +6,7 @@ namespace Journal.Application;
 
 public interface IJournalRepository
 {
-    Task<string> CreateJournal(CreateJournalCommand.JournalDto dto);
+    Task<string> CreateJournal(CreateJournalDto dto);
     Task<List<JournalMainDto>> GetAll();
     Task<bool> EditJournal(string id, EditAdctionFormDto dto);
 }

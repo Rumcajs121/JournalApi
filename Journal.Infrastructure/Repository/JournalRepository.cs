@@ -15,7 +15,7 @@ public class JournalRepository:IJournalRepository
     {
         _dbContext = dbContext;
     }
-    public async Task<string> CreateJournal(CreateJournalCommand.JournalDto dto)
+    public async Task<string> CreateJournal(CreateJournalDto dto)
     {
         var newJournal = new Domain.Entities.Journal
         {
@@ -34,22 +34,21 @@ public class JournalRepository:IJournalRepository
         var journalAll = await _dbContext.Journals
             .Include(x => x.Author)
             .Include(journal => journal.Pictures)
-            .Select(journal => new JournalMainDto
-            {
-                NormalizedId = journal.NormalizedId,
-                ShortDescription = journal.ShortDescription,
-                Text = journal.Text,
-                Pictures = journal.Pictures
+            .Select(journal => new JournalMainDto(
+                journal.NormalizedId,
+                journal.ShortDescription,
+                journal.Text,
+                journal.Pictures
                     .Select(p => "https://journalapisane.blob.core.windows.net/pictures/" + p.GuidNormalizedName)
                     .ToList(),
-                Nick = journal.Author.Nick,
-                ImgAvatar = journal.Author.ImgAvatar,
-                SumJournal = journal.Author.SumJournal,
-                CreateAccount = journal.Author.CreateAccount,
-                LastLogin = journal.Author.LastLogin,
-                TheBestJournal = journal.Author.TheBestJournal
-            })
+                journal.Author.Nick,
+                journal.Author.ImgAvatar,
+                journal.Author.SumJournal,
+                journal.Author.CreateAccount,
+                journal.Author.LastLogin,
+                journal.Author.TheBestJournal))
             .ToListAsync();
+    
         return journalAll;
     }
 
