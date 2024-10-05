@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.21.2" />
     <PackageReference Include="FluentValidation" Version="11.10.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
@@ -30,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Commons\Commands\DeleteJournal\" />
-    <Folder Include="Commons\Queries\GetOneJournalById\" />
   </ItemGroup>
 
 </Project>

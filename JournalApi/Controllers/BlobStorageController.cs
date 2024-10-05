@@ -1,5 +1,7 @@
+using Azure.Data.Tables;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Journal.Application.Dtos;
 using log4net;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -69,5 +71,30 @@ public class BlobStorageController:ControllerBase
         }
         return NotFound($"Blob {blobName} is not find");
     }
-    
+
+    [HttpPost("Table/Create")]
+    public async Task<IActionResult> CreateTable(TestTableInAzure data)
+    {
+        TableServiceClient tableServiceClient = new TableServiceClient(_configuration.GetConnectionString("JournalApiBlobs"));
+       TableClient tableClient= tableServiceClient.GetTableClient("employ");
+       await tableClient.CreateIfNotExistsAsync();
+       await tableClient.AddEntityAsync(data);
+       return Accepted();
+    }
+    [HttpGet("Table/Get")]
+    public async Task<IActionResult> GetTables([FromQuery] string rowKey,[FromQuery]string partionKey)
+    {
+        TableServiceClient tableServiceClient = new TableServiceClient(_configuration.GetConnectionString("JournalApiBlobs"));
+        TableClient tableClient= tableServiceClient.GetTableClient("employ");
+        var row=await tableClient.GetEntityAsync<TestTableInAzure>(partionKey,rowKey);
+        return Ok(row);
+    }
+    [HttpGet("table/query")]
+    public IActionResult Query()
+    {
+        TableServiceClient tableServiceClient = new TableServiceClient(_configuration.GetConnectionString("JournalApiBlobs"));
+        TableClient tableClient= tableServiceClient.GetTableClient("employ");
+        var row= tableClient.Query<TestTableInAzure>(e=>e.PartitionKey=="IT");
+        return Ok(row);
+    }
 }

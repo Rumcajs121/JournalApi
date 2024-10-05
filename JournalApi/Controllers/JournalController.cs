@@ -1,6 +1,7 @@
 using Journal.Application.Commons.Commands.CreateJournal;
 using Journal.Application.Commons.Commands.EditJournal;
 using Journal.Application.Commons.Queries.GetAllJournal;
+using Journal.Application.Commons.Queries.GetOneJournalById;
 using Journal.Application.Dtos;
 using log4net;
 using MediatR;
@@ -45,5 +46,19 @@ public class JournalController :ControllerBase
             });
 
             return Ok(result);
+    }
+
+    [HttpGet("GetJournal/{id}")]
+    public async Task<IActionResult> GetJorunalById([FromRoute] string id)
+    {
+        var result = await _mediator.Send(new GetOneJournalQuery
+        {
+            NormalizedGuid = id
+        });
+        if (result == null)
+        {
+            return NotFound($"Journal with ID '{id}' not found.");
+        }
+        return Ok(result);
     }
 }
