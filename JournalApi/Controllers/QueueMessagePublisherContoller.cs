@@ -24,7 +24,7 @@ public class QueueMessagePublisherContoller : ControllerBase
         QueueClient queueClient = new QueueClient(_configuration.GetConnectionString("JournalApiBlobs"), queueName);
         await queueClient.CreateIfNotExistsAsync();
         var serializedMessage = JsonConvert.SerializeObject(returnetForecast);
-        queueClient.SendMessageAsync(serializedMessage);
+        await queueClient.SendMessageAsync(serializedMessage);
         _log.Info($"Everything is on I send for destination queue: {queueName}. This is this message:{serializedMessage}");
         return Ok(); 
     }
